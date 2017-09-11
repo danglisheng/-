@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图片轮播</title>
+	<style>
+	    *{margin:0;padding:0;}
+	    .hidden{
+	    	display:none;
+	    }
+	    .clearfix:after{
+	    	content:'';
+	    	display:block;
+	    	height:0;
+	    	line-height:0;
+	    	visibility:hidden;
+	    	clear:both; 
+	    }
+		.img_collection {
+			width:510px;
+			height:340px;
+			border:solid 1px red;
+			position:relative;
+			margin:20px auto 5px auto;
+		}
+		.img_collection  li{
+			list-style:none;
+			position:absolute;
+			left:0;
+			top:0;
+
+		}
+		.img_collection  li img{
+			width:510px;
+			height:340px;
+		}
+		.pic_wrapper{
+			border:solid 1px red;
+			width:600px;
+			height:400px;
+			position:relative;
+			margin:30px auto;
+		}
+		.backward{
+			font-size:60px;
+			position:absolute;
+			left:0;
+			top:170px;
+		}
+		.forward{
+			font-size:60px;
+			position:absolute;
+			right:0;
+			top:170px;
+		}
+		.backward,.forward{
+			cursor:pointer;
+		}
+		.pointer{
+			
+			list-style:none;
+			width:100px;
+			margin:0 auto;
+		}
+		.pointer li{
+			float:left;
+			width:25%;
+			cursor:pointer;
+			text-align:center;
+		}
+		.pointer li:hover{
+			background:#999999;
+			color:#ffffff;
+		}
+	</style>
+</head>
+<body>
+	 <div class="pic_wrapper">
+	 	<div class="backward"><</div>
+		<ul id="img_collection" class="img_collection">
+			<li><img class="" src="./img/wheat.jpg" alt=""></li>
+			<li><img class="hidden" src="./img/sunset.jpg" alt=""></li>
+			<li><img class="hidden" src="./img/pumpkin.jpg" alt=""></li>
+			<li><img class="hidden" src="./img/mountain_traveler.jpg" alt=""></li>
+		
+		</ul>
+		<div class="forward">></div>
+		<ul class="pointer clearfix">
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+		</ul>
+	</div>
+	<script type="text/javascript">
+		var position=0;
+		var imglist=document.getElementById("img_collection").getElementsByTagName("img");
+		var backward=document.getElementsByClassName("backward")[0];
+		var forward=document.getElementsByClassName("forward")[0];
+		var pointer=document.getElementsByClassName("pointer")[0];
+		var img_wrapper=document.getElementsByClassName("pic_wrapper")[0];
+		var switch_timer;
+		
+		function hide_and_show(position){
+			for(var i=0;i<imglist.length;i++){
+				imglist[i].style.display="none";
+
+			}
+			imglist[position].style.display="block";
+
+		}
+		
+		img_wrapper.onmouseover=function(){
+			clearInterval(switch_timer);
+		}
+		img_wrapper.onmouseout=function(){
+			switch_timer=setInterval(auto_switch,1000);
+		}
+		backward.addEventListener("click",function(){
+			if(position==0){
+				alert("已经是第一张图片了。");
+			}
+			else{
+				position-=1;
+				hide_and_show(position);
+			}
+			
+			
+			
+		})
+		forward.addEventListener("click",function(){
+			if(position==imglist.length-1){
+				alert("已经是最后一张图片了");
+			}
+			else{
+				position+=1;
+				hide_and_show(position);
+			}
+			
+		})
+		pointer.addEventListener("click",function(e){
+			var pic_index=parseInt(e.target.innerHTML)-1;
+			position=pic_index;
+			hide_and_show(pic_index);
+			
+		})
+		function auto_switch(){
+		  if(position<=2)
+			{
+				position++;
+				hide_and_show(position);
+			}
+			else{
+				position=0;
+				hide_and_show(position);
+			}
+		}
+		
+		switch_timer=setInterval(auto_switch,1000);
+			
+		
+	</script>
+</body>
+</html>
